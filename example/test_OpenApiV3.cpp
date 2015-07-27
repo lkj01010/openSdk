@@ -102,6 +102,51 @@ int get_user_info_parse(Json::Value& JsonRes ,struct userinfo& Info)
 }
 
 
+//----------------------------
+struct buy_rsp{
+    int ret;
+    
+};
+
+int buy_playzone_item(class OpenApiV3* sdk, string& openid, string& openkey, int zoneid, int count, Json::Value& JsonRes)
+{
+    map<string,string> params;
+    string script_name;
+
+    params["openid"]=openid;
+    params["openkey"]=openkey;
+    params["zoneid"]=zoneid;
+    params["itemid"]=itemid;
+    params["count"]=count;
+
+    script_name = "/v3/user/get_info";
+    
+    
+    return sdk->api(script_name, params,JsonRes);   
+}
+
+int buy_playzone_item_parse(Json::Value& JsonRes ,struct buy_rsp& Info)
+{
+
+    Info.ret= JsonRes["ret"].asInt();
+    if( 0 == Info.ret)
+    {
+        Info.is_lost= JsonRes["is_lost"].asInt();
+        Info.nickname = JsonRes["nickname"].asString();
+        Info.gender =  JsonRes["gender"].asString();
+        Info.country = JsonRes["country"].asString();
+        Info.province = JsonRes["province"].asString();
+        Info.city = JsonRes["city"].asString();
+        Info.figureurl = JsonRes["figureurl"].asString();
+        Info.is_yellow_vip = JsonRes["is_yellow_vip"].asInt();
+        Info.is_yellow_year_vip = JsonRes["is_yellow_year_vip"].asInt();
+        Info.yellow_vip_level = JsonRes["yellow_vip_level"].asInt();
+        Info.is_yellow_high_vip = JsonRes["is_yellow_high_vip"].asInt();
+    }    
+    return 0;
+}
+
+
 int main(int argc,char** argv)
 {
     //参数的传递可以看同名的脚本文件
